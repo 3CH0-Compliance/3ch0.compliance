@@ -162,6 +162,42 @@ footer a{color:#aaa;text-decoration:underline;margin:0 8px}
 .sec-badge{position:fixed;bottom:10px;right:10px;background:rgba(16,185,129,.1);border:1px solid rgba(16,185,129,.3);border-radius:6px;padding:4px 8px;font-size:10px;color:#10b981;z-index:1000}
 @keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
 ::-webkit-scrollbar{width:6px}::-webkit-scrollbar-track{background:var(--main-bg)}::-webkit-scrollbar-thumb{background:rgba(146,205,236,.3);border-radius:3px}
+
+/* ── ONBOARDING v3 ── */
+#ob3-overlay{display:none;position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,0.82);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:16px;}
+#ob3-overlay.ob3-show{display:flex;}
+.ob3-modal{position:relative;width:100%;max-width:500px;background:#0d0d0d;border:1px solid rgba(146,205,236,0.25);border-radius:16px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,0.9);animation:ob3In .35s cubic-bezier(.34,1.26,.64,1) both;}
+@keyframes ob3In{from{opacity:0;transform:scale(.93) translateY(14px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.ob3-accent{position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#92cdec 40%,#0069d9 60%,transparent);}
+.ob3-body{padding:28px 32px 24px;}
+.ob3-toprow{display:flex;align-items:center;justify-content:space-between;margin-bottom:24px;}
+.ob3-lbl{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:0.1em;}
+.ob3-dots{display:flex;gap:6px;align-items:center;}
+.ob3-dot{height:4px;border-radius:2px;background:rgba(255,255,255,0.15);transition:all 0.3s ease;width:6px;cursor:pointer;}
+.ob3-dot.ob3-on{width:20px;background:#92cdec;}
+.ob3-wrap{overflow:hidden;}
+.ob3-track{display:flex;transition:transform 0.4s cubic-bezier(0.77,0,0.18,1);}
+.ob3-slide{min-width:100%;box-sizing:border-box;}
+.ob3-ico{width:48px;height:48px;border-radius:12px;background:rgba(146,205,236,0.12);border:1px solid rgba(146,205,236,0.3);display:flex;align-items:center;justify-content:center;margin-bottom:16px;}
+.ob3-ico.g{background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.3);}
+.ob3-ttl{font-size:18px;font-weight:500;color:#fff;margin-bottom:8px;font-family:'Playfair Display',serif;line-height:1.3;}
+.ob3-txt{font-size:13px;color:#a0a0a0;line-height:1.7;}
+.ob3-hint{margin-top:18px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px;}
+.ob3-hint.g{background:rgba(16,185,129,0.06);border-color:rgba(16,185,129,0.2);}
+.ob3-hdot{width:6px;height:6px;border-radius:50%;background:#10b981;flex-shrink:0;}
+.ob3-htxt{font-size:12px;color:#a0a0a0;line-height:1.5;}
+.ob3-stats{margin-top:18px;display:flex;gap:8px;}
+.ob3-stat{flex:1;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:10px 12px;text-align:center;}
+.ob3-sv{font-size:18px;font-weight:500;color:#92cdec;}
+.ob3-sl{font-size:11px;color:#a0a0a0;margin-top:2px;}
+.ob3-foot{display:flex;align-items:center;justify-content:space-between;margin-top:24px;}
+.ob3-skip{background:none;border:none;color:#555;font-size:13px;cursor:pointer;padding:8px 0;transition:color .2s;}
+.ob3-skip:hover{color:#a0a0a0;}
+.ob3-nav{display:flex;gap:10px;}
+.ob3-back{padding:9px 20px;border-radius:30px;font-size:13px;font-weight:500;cursor:pointer;border:1px solid rgba(255,255,255,0.15);background:transparent;color:#a0a0a0;display:none;transition:background .2s;}
+.ob3-back:hover{background:rgba(255,255,255,0.06);}
+.ob3-next{padding:9px 26px;border-radius:30px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:linear-gradient(135deg,#fff,#92cdec,#0069d9);color:#0a0a0a;transition:opacity .2s;box-shadow:0 4px 14px rgba(146,205,236,0.25);}
+.ob3-next:hover{opacity:.88;}
 </style>
 </head>
 <body>
@@ -179,441 +215,147 @@ footer a{color:#aaa;text-decoration:underline;margin:0 8px}
 <!-- TOAST CONTAINER -->
 <div id="toast-container" style="position:fixed;top:90px;right:20px;z-index:3000;display:flex;flex-direction:column;gap:8px;pointer-events:none;max-width:320px;"></div>
 
-<!-- ════════════════════════════════════════════════════ -->
-<!--  ONBOARDING POPUP                                    -->
-<!-- ════════════════════════════════════════════════════ -->
-<div id="ob-overlay" style="display:none;position:fixed;inset:0;z-index:9500;background:rgba(0,0,0,0.78);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);align-items:center;justify-content:center;padding:16px;">
+<!-- ── ONBOARDING POPUP v3 ── -->
+<div id="ob3-overlay">
+  <div class="ob3-modal">
+    <div class="ob3-accent"></div>
+    <div class="ob3-body">
 
-  <div id="ob-modal" style="position:relative;width:100%;max-width:780px;max-height:92vh;background:#0d0d0d;border:1px solid rgba(146,205,236,0.2);border-radius:22px;overflow:hidden;box-shadow:0 0 0 1px rgba(146,205,236,0.06),0 40px 100px rgba(0,0,0,0.85);display:flex;flex-direction:column;">
-
-    <!-- Accent line -->
-    <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent 0%,#92cdec 40%,#0069d9 60%,transparent 100%);z-index:1;"></div>
-
-    <!-- Slide viewport -->
-    <div id="ob-viewport" style="overflow:hidden;width:100%;flex:1;min-height:0;">
-      <div id="ob-track" style="display:flex;transition:transform 0.48s cubic-bezier(0.77,0,0.18,1);">
-
-        <!-- ── SLIDE 1: Dashboard ── -->
-        <div class="ob-slide">
-          <div class="ob-vis" style="background:radial-gradient(ellipse at 30% 50%,rgba(146,205,236,0.16) 0%,transparent 60%),radial-gradient(ellipse at 80% 20%,rgba(0,105,217,0.18) 0%,transparent 55%),#080808;">
-            <!-- Score ring mockup -->
-            <div style="display:flex;gap:20px;align-items:center;width:100%;max-width:520px;margin:0 auto;">
-              <div style="flex-shrink:0;">
-                <svg width="80" height="80" viewBox="0 0 80 80">
-                  <circle cx="40" cy="40" r="32" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="7"/>
-                  <circle cx="40" cy="40" r="32" fill="none" stroke="url(#obg1)" stroke-width="7" stroke-dasharray="201" stroke-dashoffset="128" stroke-linecap="round" transform="rotate(-90 40 40)"/>
-                  <defs><linearGradient id="obg1" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#fff"/><stop offset="50%" stop-color="#92cdec"/><stop offset="100%" stop-color="#0069d9"/></linearGradient></defs>
-                  <text x="40" y="38" text-anchor="middle" fill="#fff" font-size="17" font-weight="700" font-family="Playfair Display,serif">36</text>
-                  <text x="40" y="50" text-anchor="middle" fill="#a0a0a0" font-size="8">% / 100</text>
-                </svg>
-              </div>
-              <div style="flex:1;">
-                <div style="font-family:'Playfair Display',serif;font-size:14px;background:linear-gradient(135deg,#fff,#92cdec,#0069d9);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;">Compliance Dashboard</div>
-                <div style="background:rgba(255,255,255,0.05);border-radius:4px;height:5px;overflow:hidden;margin-bottom:10px;"><div style="width:36%;height:100%;background:linear-gradient(90deg,#fff,#92cdec,#0069d9);border-radius:4px;"></div></div>
-                <div style="display:flex;flex-direction:column;gap:6px;">
-                  <div style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);border-radius:8px;padding:7px 10px;font-size:10px;"><strong style="color:#fca5a5;">GDPR Bundle Required</strong> <span style="color:#666;">— 7 docs</span></div>
-                  <div style="background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);border-radius:8px;padding:7px 10px;font-size:10px;"><strong style="color:#fca5a5;">POPIA Bundle Required</strong> <span style="color:#666;">— 8 docs</span></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="ob-copy" style="display:flex;flex-direction:column;align-items:center;text-align:center;width:100%;box-sizing:border-box;padding:20px 48px 14px;">
-            <div class="ob-step" style="display:block;width:100%;text-align:center;">Step 1 of 5</div>
-            <div class="ob-icon-wrap" style="align-self:center;margin-left:auto;margin-right:auto;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#92cdec" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
-            <h2 class="ob-title" style="display:block;width:100%;text-align:center;">Your compliance command centre</h2>
-            <p class="ob-desc" style="display:block;width:100%;text-align:center;">The dashboard tracks your live compliance score, shows which regulations apply to your business, and lists every document you still need. The score ring climbs as you answer the AI Advisor and generate documents.</p>
-          </div>
+      <div class="ob3-toprow">
+        <div class="ob3-lbl">Welcome to 3CH0</div>
+        <div class="ob3-dots">
+          <div class="ob3-dot ob3-on" id="ob3d0" onclick="ob3GoTo(0)"></div>
+          <div class="ob3-dot" id="ob3d1" onclick="ob3GoTo(1)"></div>
+          <div class="ob3-dot" id="ob3d2" onclick="ob3GoTo(2)"></div>
         </div>
-
-        <!-- ── SLIDE 2: Form ── -->
-        <div class="ob-slide">
-          <div class="ob-vis" style="background:radial-gradient(ellipse at 70% 30%,rgba(0,105,217,0.2) 0%,transparent 55%),radial-gradient(ellipse at 20% 70%,rgba(146,205,236,0.14) 0%,transparent 55%),#080808;">
-            <div style="width:100%;max-width:440px;margin:0 auto;background:rgba(18,18,18,0.95);border:1px solid rgba(255,255,255,0.1);border-radius:14px;padding:16px 18px;">
-              <div style="font-size:10px;text-transform:uppercase;letter-spacing:0.1em;color:#92cdec;margin-bottom:12px;padding-bottom:7px;border-bottom:1px solid rgba(146,205,236,0.12);">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:5px;"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
-                Company Information
-              </div>
-              <div style="display:flex;flex-direction:column;gap:7px;margin-bottom:12px;">
-                <div><div style="font-size:8px;color:#92cdec;font-weight:600;margin-bottom:3px;">Company Name <span style="color:#ef4444;">*</span></div><div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:6px 9px;font-size:10px;color:#fff;">Acme Corp (Pty) Ltd</div></div>
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;">
-                  <div><div style="font-size:8px;color:#92cdec;font-weight:600;margin-bottom:3px;">Industry</div><div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:6px;padding:6px 9px;font-size:10px;color:#a0a0a0;">SaaS ▾</div></div>
-                  <div><div style="font-size:8px;color:#92cdec;font-weight:600;margin-bottom:3px;">Regulation</div><div style="background:rgba(21,18,16,0.8);border:1px solid rgba(146,205,236,0.4);border-radius:6px;padding:6px 9px;font-size:10px;color:#92cdec;">GDPR ▾</div></div>
-                </div>
-              </div>
-              <div style="background:linear-gradient(135deg,#fff,#92cdec,#0069d9);border-radius:18px;padding:8px;text-align:center;font-size:10px;font-weight:700;color:#0a0a0a;">
-                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:4px;"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/><path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/></svg>
-                Generate My Compliance Document
-              </div>
-            </div>
-          </div>
-          <div class="ob-copy" style="display:flex;flex-direction:column;align-items:center;text-align:center;width:100%;box-sizing:border-box;padding:20px 48px 14px;">
-            <div class="ob-step" style="display:block;width:100%;text-align:center;">Step 2 of 5</div>
-            <div class="ob-icon-wrap" style="align-self:center;margin-left:auto;margin-right:auto;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#92cdec" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
-            <h2 class="ob-title" style="display:block;width:100%;text-align:center;">Fill in the compliance form</h2>
-            <p class="ob-desc" style="display:block;width:100%;text-align:center;">Head to the home page, describe your business, select your regulation, and choose the document you need. The form takes about 3 minutes — every answer shapes the final document our AI builds for you.</p>
-          </div>
-        </div>
-
-        <!-- ── SLIDE 3: Make.com pipeline ── -->
-        <div class="ob-slide">
-          <div class="ob-vis" style="background:radial-gradient(ellipse at 50% 50%,rgba(0,105,217,0.22) 0%,transparent 65%),#080808;">
-            <div style="width:100%;max-width:480px;margin:0 auto;">
-              <!-- Pipeline nodes -->
-              <div style="display:flex;align-items:center;justify-content:center;margin-bottom:14px;">
-                <!-- Node 1 -->
-                <div style="display:flex;flex-direction:column;align-items:center;gap:5px;flex:1;">
-                  <div style="width:38px;height:38px;border-radius:10px;background:rgba(146,205,236,0.15);border:1px solid rgba(146,205,236,0.4);display:flex;align-items:center;justify-content:center;position:relative;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#92cdec" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/></svg>
-                    <div style="position:absolute;top:-3px;right:-3px;width:8px;height:8px;border-radius:50%;background:#10b981;box-shadow:0 0 5px rgba(16,185,129,0.8);"></div>
-                  </div>
-                  <div style="font-size:8px;color:#a0a0a0;text-align:center;line-height:1.3;">Form<br>submitted</div>
-                </div>
-                <!-- Connector -->
-                <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(146,205,236,0.4),rgba(146,205,236,0.6));position:relative;overflow:hidden;">
-                  <div class="ob-pdot"></div>
-                </div>
-                <!-- Node 2: Supabase -->
-                <div style="display:flex;flex-direction:column;align-items:center;gap:5px;flex:1;">
-                  <div style="width:38px;height:38px;border-radius:10px;background:rgba(146,205,236,0.12);border:1px solid rgba(146,205,236,0.35);display:flex;align-items:center;justify-content:center;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#92cdec" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-                  </div>
-                  <div style="font-size:8px;color:#a0a0a0;text-align:center;line-height:1.3;">Data stored<br>(Supabase)</div>
-                </div>
-                <!-- Connector -->
-                <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(146,205,236,0.6),rgba(0,105,217,0.6));position:relative;overflow:hidden;">
-                  <div class="ob-pdot" style="animation-delay:0.3s;"></div>
-                </div>
-                <!-- Node 3: Webhook -->
-                <div style="display:flex;flex-direction:column;align-items:center;gap:5px;flex:1;">
-                  <div style="width:38px;height:38px;border-radius:10px;background:rgba(0,105,217,0.18);border:1px solid rgba(0,105,217,0.45);display:flex;align-items:center;justify-content:center;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-                  </div>
-                  <div style="font-size:8px;color:#a0a0a0;text-align:center;line-height:1.3;">Webhook<br>triggered</div>
-                </div>
-                <!-- Connector -->
-                <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(0,105,217,0.6),rgba(146,205,236,0.4));position:relative;overflow:hidden;">
-                  <div class="ob-pdot" style="animation-delay:0.6s;"></div>
-                </div>
-                <!-- Node 4: AI -->
-                <div style="display:flex;flex-direction:column;align-items:center;gap:5px;flex:1;">
-                  <div style="width:38px;height:38px;border-radius:10px;background:rgba(146,205,236,0.1);border:1px solid rgba(146,205,236,0.3);display:flex;align-items:center;justify-content:center;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#92cdec" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4M8 15h.01M16 15h.01"/><path d="M3 11V9a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v2"/></svg>
-                  </div>
-                  <div style="font-size:8px;color:#a0a0a0;text-align:center;line-height:1.3;">AI builds<br>document</div>
-                </div>
-                <!-- Connector -->
-                <div style="flex:1;height:1px;background:linear-gradient(90deg,rgba(146,205,236,0.4),rgba(16,185,129,0.6));position:relative;overflow:hidden;">
-                  <div class="ob-pdot" style="animation-delay:0.9s;background:#10b981;box-shadow:0 0 4px #10b981;"></div>
-                </div>
-                <!-- Node 5: Delivered -->
-                <div style="display:flex;flex-direction:column;align-items:center;gap:5px;flex:1;">
-                  <div style="width:38px;height:38px;border-radius:10px;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.4);display:flex;align-items:center;justify-content:center;">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                  </div>
-                  <div style="font-size:8px;color:#10b981;text-align:center;font-weight:600;line-height:1.3;">Delivered<br>to inbox</div>
-                </div>
-              </div>
-              <!-- Make.com badge -->
-              <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);border-radius:8px;padding:9px 14px;text-align:center;margin-bottom:10px;">
-                <div style="font-size:9px;text-transform:uppercase;letter-spacing:0.1em;color:#a0a0a0;margin-bottom:2px;">Powered by</div>
-                <div style="font-size:12px;font-weight:700;color:#fff;">Make.com Automation</div>
-                <div style="font-size:9px;color:#a0a0a0;margin-top:2px;">Your form triggers a live workflow that builds your document</div>
-              </div>
-              <!-- Timer badge -->
-              <div style="display:flex;justify-content:center;">
-                <div style="display:inline-flex;align-items:center;gap:5px;background:rgba(16,185,129,0.1);border:1px solid rgba(16,185,129,0.3);border-radius:20px;padding:4px 12px;">
-                  <div style="width:5px;height:5px;border-radius:50%;background:#10b981;animation:obPing 1.5s ease infinite;"></div>
-                  <span style="font-size:9px;font-weight:600;color:#10b981;">Under 5 minutes end-to-end</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="ob-copy" style="display:flex;flex-direction:column;align-items:center;text-align:center;width:100%;box-sizing:border-box;padding:20px 48px 14px;">
-            <div class="ob-step" style="display:block;width:100%;text-align:center;">Step 3 of 5</div>
-            <div class="ob-icon-wrap" style="align-self:center;margin-left:auto;margin-right:auto;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#92cdec" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
-            <h2 class="ob-title" style="display:block;width:100%;text-align:center;">Your form triggers the machine</h2>
-            <p class="ob-desc" style="display:block;width:100%;text-align:center;">The moment you submit, a Make.com automation fires. Your data is stored in Supabase, a webhook triggers the AI pipeline, and your personalised document is built against the actual regulation text — then delivered straight to your inbox.</p>
-          </div>
-        </div>
-
-        <!-- ── SLIDE 4: Delivery ── -->
-        <div class="ob-slide">
-          <div class="ob-vis" style="background:radial-gradient(ellipse at 40% 30%,rgba(16,185,129,0.16) 0%,transparent 55%),radial-gradient(ellipse at 75% 70%,rgba(146,205,236,0.1) 0%,transparent 55%),#080808;">
-            <div style="width:100%;max-width:440px;display:flex;flex-direction:column;gap:9px;margin:0 auto;">
-              <!-- Email card -->
-              <div style="background:rgba(16,185,129,0.07);border:1px solid rgba(16,185,129,0.25);border-radius:12px;padding:13px 15px;">
-                <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-                  <div style="width:28px;height:28px;border-radius:7px;background:rgba(16,185,129,0.15);display:flex;align-items:center;justify-content:center;">
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-                  </div>
-                  <div><div style="font-size:10px;font-weight:600;color:#fff;">Your compliance document is ready</div><div style="font-size:8px;color:#a0a0a0;">From: 3CH0 Compliance · Just now</div></div>
-                </div>
-                <div style="font-size:9px;color:#a0a0a0;line-height:1.6;margin-bottom:8px;">Your tailored <strong style="color:#fff;">GDPR Privacy Policy</strong> has been generated. Review and implement at your convenience.</div>
-                <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:7px;padding:7px 10px;display:flex;align-items:center;gap:7px;">
-                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#92cdec" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-                  <div style="flex:1;font-size:9px;font-weight:600;color:#fff;">GDPR_Privacy_Policy_AcmeCorp.pdf</div>
-                  <div style="font-size:8px;background:rgba(16,185,129,0.15);color:#10b981;padding:2px 7px;border-radius:7px;border:1px solid rgba(16,185,129,0.3);font-weight:600;">Ready</div>
-                </div>
-              </div>
-              <!-- Score update -->
-              <div style="background:rgba(146,205,236,0.06);border:1px solid rgba(146,205,236,0.2);border-radius:10px;padding:9px 13px;display:flex;align-items:center;gap:9px;">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#92cdec" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg>
-                <div style="flex:1;font-size:10px;font-weight:600;color:#fff;">Dashboard score updated</div>
-                <div style="background:linear-gradient(135deg,#fff,#92cdec,#0069d9);border-radius:8px;padding:2px 9px;font-size:10px;font-weight:700;color:#0a0a0a;">+9%</div>
-              </div>
-            </div>
-          </div>
-          <div class="ob-copy" style="display:flex;flex-direction:column;align-items:center;text-align:center;width:100%;box-sizing:border-box;padding:20px 48px 14px;">
-            <div class="ob-step" style="display:block;width:100%;text-align:center;">Step 4 of 5</div>
-            <div class="ob-icon-wrap" style="align-self:center;margin-left:auto;margin-right:auto;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#92cdec" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-            <h2 class="ob-title" style="display:block;width:100%;text-align:center;">Document delivered, score climbs</h2>
-            <p class="ob-desc" style="display:block;width:100%;text-align:center;">In under 5 minutes your audit-ready document arrives in your inbox. Your dashboard score updates automatically — each document earns you a slice of the 80% available from document generation. Generate them all to hit 100%.</p>
-          </div>
-        </div>
-
-        <!-- ── SLIDE 5: Plans ── -->
-        <div class="ob-slide">
-          <div class="ob-vis" style="background:radial-gradient(ellipse at 50% 40%,rgba(0,105,217,0.18) 0%,transparent 60%),#080808;">
-            <div style="width:100%;max-width:440px;display:flex;flex-direction:column;gap:8px;margin:0 auto;">
-              <!-- Free -->
-              <div style="background:rgba(20,20,20,0.95);border:1px solid rgba(255,255,255,0.1);border-radius:12px;padding:13px 15px;display:flex;align-items:center;justify-content:space-between;">
-                <div><div style="font-size:12px;font-weight:700;color:#fff;">Free</div><div style="font-size:9px;color:#a0a0a0;margin-top:2px;">1 doc/month · Core regulations</div></div>
-                <div style="font-size:14px;font-weight:700;color:#fff;">$0</div>
-              </div>
-              <!-- Agency Pro -->
-              <div style="background:rgba(146,205,236,0.06);border:1px solid rgba(146,205,236,0.4);border-radius:12px;padding:13px 15px;position:relative;overflow:hidden;">
-                <div style="position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#92cdec,#0069d9,transparent);"></div>
-                <div style="display:flex;align-items:flex-start;justify-content:space-between;">
-                  <div>
-                    <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px;"><div style="font-size:12px;font-weight:700;color:#fff;">Agency Pro</div><div style="font-size:8px;background:rgba(146,205,236,0.15);color:#92cdec;padding:1px 7px;border-radius:7px;border:1px solid rgba(146,205,236,0.3);font-weight:700;">POPULAR</div></div>
-                    <div style="font-size:9px;color:#a0a0a0;">Unlimited docs · All 4 regulations</div>
-                    <div style="margin-top:6px;display:flex;flex-direction:column;gap:2px;">
-                      <div style="font-size:9px;color:#92cdec;"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display:inline-block;vertical-align:middle;margin-right:3px;"><polyline points="20 6 9 17 4 12"/></svg>Auto-update alerts</div>
-                      <div style="font-size:9px;color:#92cdec;"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display:inline-block;vertical-align:middle;margin-right:3px;"><polyline points="20 6 9 17 4 12"/></svg>Risk analysis unlocked</div>
-                      <div style="font-size:9px;color:#92cdec;"><svg width="8" height="8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" style="display:inline-block;vertical-align:middle;margin-right:3px;"><polyline points="20 6 9 17 4 12"/></svg>Priority generation</div>
-                    </div>
-                  </div>
-                  <div style="text-align:right;flex-shrink:0;margin-left:10px;"><div style="font-size:17px;font-weight:700;background:linear-gradient(135deg,#fff,#92cdec);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">$99</div><div style="font-size:8px;color:#a0a0a0;">/month</div></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="ob-copy" style="display:flex;flex-direction:column;align-items:center;text-align:center;width:100%;box-sizing:border-box;padding:20px 48px 14px;">
-            <div class="ob-step" style="display:block;width:100%;text-align:center;">Step 5 of 5</div>
-            <div class="ob-icon-wrap" style="align-self:center;margin-left:auto;margin-right:auto;"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#92cdec" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-            <h2 class="ob-title" style="display:block;width:100%;text-align:center;">Pick the plan that fits</h2>
-            <p class="ob-desc" style="display:block;width:100%;text-align:center;">Start free with one document per month. Upgrade to Agency Pro for unlimited document generation across all four regulations, automatic law-change alerts, full risk analysis, and priority support.</p>
-          </div>
-        </div>
-
-        <!-- ── SLIDE 6: Welcome ── -->
-        <div class="ob-slide">
-          <div class="ob-vis ob-welcome-vis" style="background:radial-gradient(ellipse at 50% 50%,rgba(146,205,236,0.2) 0%,rgba(0,105,217,0.16) 40%,transparent 70%),#080808;">
-            <!-- Animated shield -->
-            <div style="position:relative;display:flex;align-items:center;justify-content:center;width:180px;height:180px;flex-shrink:0;margin:0 auto;">
-              <div class="ob-ring ob-r1"></div>
-              <div class="ob-ring ob-r2"></div>
-              <div class="ob-ring ob-r3"></div>
-              <div style="width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,rgba(146,205,236,0.2),rgba(0,105,217,0.3));border:1px solid rgba(146,205,236,0.5);display:flex;align-items:center;justify-content:center;position:relative;z-index:2;box-shadow:0 0 40px rgba(146,205,236,0.2);">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#92cdec" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-              </div>
-            </div>
-            <!-- Regulation pills -->
-            <div style="display:flex;gap:6px;flex-wrap:wrap;justify-content:center;padding:0 16px;">
-              <div style="font-size:9px;font-weight:700;background:rgba(99,102,241,0.15);color:#818cf8;border:1px solid rgba(99,102,241,0.3);padding:3px 9px;border-radius:8px;">EU · GDPR</div>
-              <div style="font-size:9px;font-weight:700;background:rgba(59,130,246,0.15);color:#60a5fa;border:1px solid rgba(59,130,246,0.3);padding:3px 9px;border-radius:8px;">US · CCPA</div>
-              <div style="font-size:9px;font-weight:700;background:rgba(16,185,129,0.15);color:#34d399;border:1px solid rgba(16,185,129,0.3);padding:3px 9px;border-radius:8px;">US · HIPAA</div>
-              <div style="font-size:9px;font-weight:700;background:rgba(245,158,11,0.15);color:#fbbf24;border:1px solid rgba(245,158,11,0.3);padding:3px 9px;border-radius:8px;">ZA · POPIA</div>
-            </div>
-          </div>
-          <div class="ob-copy ob-welcome-copy" style="display:flex;flex-direction:column;align-items:center;text-align:center;width:100%;box-sizing:border-box;padding:20px 48px 14px;">
-            <div class="ob-icon-wrap" style="margin-bottom:6px;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#92cdec" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-            </div>
-            <h2 class="ob-title" style="font-size:20px;">Welcome to 3CH0 Compliance</h2>
-            <p class="ob-desc" style="margin-bottom:18px;">Stop hoping you're compliant. Know it. Your compliance infrastructure is ready — complete the AI Advisor, generate your first document, and watch your score climb.</p>
-            <!-- Final buttons -->
-            <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
-              <button onclick="obClose()" style="padding:10px 20px;border-radius:30px;font-size:13px;font-weight:600;color:var(--accent);border:1px solid rgba(146,205,236,0.35);background:transparent;cursor:pointer;transition:background 0.2s;" onmouseover="this.style.background='rgba(146,205,236,0.1)'" onmouseout="this.style.background='transparent'">Explore Dashboard</button>
-              <a href="home.html" onclick="obClose()" style="padding:10px 22px;border-radius:30px;font-size:13px;font-weight:600;color:#0a0a0a;background:linear-gradient(135deg,#fff,#92cdec,#0069d9);text-decoration:none;display:inline-flex;align-items:center;gap:6px;box-shadow:0 5px 18px rgba(146,205,236,0.25);">Generate First Doc <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
-            </div>
-          </div>
-        </div>
-
-      </div><!-- /ob-track -->
-    </div><!-- /ob-viewport -->
-
-    <!-- Controls bar -->
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 24px 18px;flex-shrink:0;border-top:1px solid rgba(255,255,255,0.05);">
-      <!-- Dots + "Don't show again" -->
-      <div style="display:flex;flex-direction:column;gap:8px;">
-        <div id="ob-dots" style="display:flex;gap:6px;align-items:center;">
-          <div class="ob-dot ob-dot-active" id="odd0" onclick="obGoTo(0)"></div>
-          <div class="ob-dot" id="odd1" onclick="obGoTo(1)"></div>
-          <div class="ob-dot" id="odd2" onclick="obGoTo(2)"></div>
-          <div class="ob-dot" id="odd3" onclick="obGoTo(3)"></div>
-          <div class="ob-dot" id="odd4" onclick="obGoTo(4)"></div>
-          <div class="ob-dot" id="odd5" onclick="obGoTo(5)"></div>
-        </div>
-        <label style="display:flex;align-items:center;gap:6px;cursor:pointer;user-select:none;">
-          <input type="checkbox" id="ob-dsa-check" style="width:13px;height:13px;accent-color:var(--accent);cursor:pointer;">
-          <span style="font-size:11px;color:#555;">Don&rsquo;t show again</span>
-        </label>
       </div>
-      <!-- Nav -->
-      <div style="display:flex;align-items:center;gap:8px;">
-        <button id="ob-skip-btn" onclick="obSkipToEnd()" style="font-size:11px;color:#444;background:none;border:none;cursor:pointer;padding:4px 8px;transition:color 0.2s;" onmouseover="this.style.color='#777'" onmouseout="this.style.color='#444'">Skip tour</button>
-        <button id="ob-prev-btn" onclick="obPrev()" style="width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,0.1);background:rgba(255,255,255,0.03);color:#666;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all 0.2s;opacity:0;" disabled>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
-        </button>
-        <button id="ob-next-btn" onclick="obNext()" style="padding:8px 20px;border-radius:30px;border:none;background:linear-gradient(135deg,#fff,#92cdec,#0069d9);color:#0a0a0a;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.2s;box-shadow:0 4px 14px rgba(146,205,236,0.3);">Next</button>
+
+      <div class="ob3-wrap">
+        <div class="ob3-track" id="ob3-track">
+
+          <!-- Slide 1 -->
+          <div class="ob3-slide">
+            <div class="ob3-ico">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#92cdec" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><line x1="9" y1="12" x2="15" y2="12"/><line x1="9" y1="16" x2="13" y2="16"/></svg>
+            </div>
+            <div class="ob3-ttl">Tell us about your business</div>
+            <div class="ob3-txt">Head to the <strong style="color:#92cdec;">Home</strong> page and fill in the compliance form. Tell us your industry, where your customers are, and which regulation you need. Takes about 3 minutes — no legal knowledge required.</div>
+            <div class="ob3-hint">
+              <div class="ob3-hdot"></div>
+              <div class="ob3-htxt">Your first document is <strong style="color:#fff;">completely free</strong> — no credit card needed</div>
+            </div>
+          </div>
+
+          <!-- Slide 2 -->
+          <div class="ob3-slide">
+            <div class="ob3-ico">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#92cdec" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            </div>
+            <div class="ob3-ttl">We build your document</div>
+            <div class="ob3-txt">Once you submit, our AI maps your answers against the actual regulation text — GDPR, POPIA, HIPAA, or CCPA — and generates a document tailored to your specific business. Not a generic template. Delivered to your inbox in under 5 minutes.</div>
+            <div class="ob3-stats">
+              <div class="ob3-stat"><div class="ob3-sv">5 min</div><div class="ob3-sl">delivery time</div></div>
+              <div class="ob3-stat"><div class="ob3-sv">4</div><div class="ob3-sl">regulations covered</div></div>
+              <div class="ob3-stat"><div class="ob3-sv">100%</div><div class="ob3-sl">tailored to you</div></div>
+            </div>
+          </div>
+
+          <!-- Slide 3 -->
+          <div class="ob3-slide">
+            <div class="ob3-ico g">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+            </div>
+            <div class="ob3-ttl">Know exactly where you stand</div>
+            <div class="ob3-txt">Your dashboard tracks your live compliance score, which documents you have, and what's still missing. Complete the AI Advisor and generate documents to build your score toward 100%. Need more than one doc a month? Upgrade anytime on the <strong style="color:#92cdec;">Subscription</strong> page.</div>
+            <div class="ob3-hint g">
+              <div class="ob3-hdot"></div>
+              <div class="ob3-htxt">Regulations change — we <strong style="color:#fff;">alert you automatically</strong> when your documents need updating</div>
+            </div>
+          </div>
+
+        </div>
       </div>
+
+      <div class="ob3-foot">
+        <button class="ob3-skip" id="ob3-skip" onclick="ob3Close()">Skip</button>
+        <div class="ob3-nav">
+          <button class="ob3-back" id="ob3-back" onclick="ob3Prev()">Back</button>
+          <button class="ob3-next" id="ob3-next" onclick="ob3Next()">Next</button>
+        </div>
+      </div>
+
     </div>
+  </div>
+</div>
 
-  </div><!-- /ob-modal -->
-</div><!-- /ob-overlay -->
-<style>
-/* ── ONBOARDING POPUP ── */
-@keyframes obModalIn  { from { opacity:0; transform:scale(0.93) translateY(18px); } to { opacity:1; transform:scale(1) translateY(0); } }
-@keyframes obPulseTravel { 0% { transform:translateX(-100%) translateY(-50%); } 100% { transform:translateX(500%) translateY(-50%); } }
-@keyframes obRingExpand { 0% { transform:translate(-50%,-50%) scale(1); opacity:0.55; } 100% { transform:translate(-50%,-50%) scale(1.7); opacity:0; } }
-@keyframes obPing { 0%,100% { transform:scale(1); opacity:0.9; } 50% { transform:scale(1.4); opacity:0; } }
+<script>
+(function(){
+  var KEY='3ch0_ob_v3', TOTAL=3, idx=0;
 
-#ob-modal { animation: obModalIn 0.42s cubic-bezier(0.34,1.26,0.64,1) both; }
+  function update(){
+    document.getElementById('ob3-track').style.transform='translateX(-'+(idx*100)+'%)';
+    for(var i=0;i<TOTAL;i++){
+      var d=document.getElementById('ob3d'+i);
+      if(!d)continue;
+      d.style.width=i===idx?'20px':'6px';
+      d.style.background=i===idx?'#92cdec':'rgba(255,255,255,0.15)';
+      d.className='ob3-dot'+(i===idx?' ob3-on':'');
+    }
+    var back=document.getElementById('ob3-back');
+    var skip=document.getElementById('ob3-skip');
+    var next=document.getElementById('ob3-next');
+    if(back)back.style.display=idx>0?'inline-block':'none';
+    if(skip)skip.style.display=idx<TOTAL-1?'inline-block':'none';
+    if(next)next.textContent=idx===TOTAL-1?'Go to dashboard':'Next';
+  }
 
-.ob-slide {
-  width: 100%;
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  box-sizing: border-box;
-}
+  window.ob3GoTo=function(n){idx=Math.max(0,Math.min(TOTAL-1,n));update();};
+  window.ob3Next=function(){if(idx<TOTAL-1){idx++;update();}else{ob3Close();}};
+  window.ob3Prev=function(){if(idx>0){idx--;update();}};
 
-.ob-vis {
-  width: 100%;
-  height: 240px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  padding: 18px 20px;
-  overflow: hidden;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
-  gap: 10px;
-}
+  window.ob3Close=function(){
+    var ov=document.getElementById('ob3-overlay');
+    if(!ov)return;
+    ov.style.opacity='0';
+    ov.style.transition='opacity 0.28s ease';
+    setTimeout(function(){
+      ov.style.display='none';
+      ov.style.opacity='';
+      ov.style.transition='';
+    },290);
+    document.body.style.overflow='';
+    try{localStorage.setItem(KEY,'1');}catch(e){}
+  };
 
-.ob-welcome-vis { height: 230px; }
+  function show(){
+    try{if(localStorage.getItem(KEY))return;}catch(e){}
+    var ov=document.getElementById('ob3-overlay');
+    if(!ov)return;
+    ov.style.display='flex';
+    document.body.style.overflow='hidden';
+    update();
+  }
 
-.ob-copy {
-  padding: 20px 48px 14px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  text-align: center;
-  width: 100%;
-  box-sizing: border-box;
-}
+  document.addEventListener('keydown',function(e){
+    var ov=document.getElementById('ob3-overlay');
+    if(!ov||ov.style.display==='none')return;
+    if(e.key==='ArrowRight')window.ob3Next();
+    if(e.key==='ArrowLeft')window.ob3Prev();
+    if(e.key==='Escape')window.ob3Close();
+  });
 
-.ob-welcome-copy { padding-bottom: 8px; }
+  document.addEventListener('click',function(e){
+    if(e.target&&e.target.id==='ob3-overlay')window.ob3Close();
+  });
 
-.ob-step {
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: #444;
-  font-weight: 600;
-  margin-bottom: 6px;
-  width: 100%;
-  text-align: center;
-  display: block;
-}
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',show);
+  } else {
+    show();
+  }
+})();
+</script>
 
-.ob-icon-wrap {
-  margin-bottom: 7px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  align-self: center;
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  background: rgba(146,205,236,0.08);
-  border: 1px solid rgba(146,205,236,0.18);
-}
-
-.ob-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 17px;
-  line-height: 1.3;
-  background: linear-gradient(135deg, #ffffff, #92cdec, #0069d9);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  margin-bottom: 8px;
-  width: 100%;
-  text-align: center;
-  display: block;
-}
-
-.ob-desc {
-  font-size: 12px;
-  color: #888;
-  line-height: 1.7;
-  width: 100%;
-  text-align: center;
-  margin: 0 auto;
-  display: block;
-}
-
-.ob-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.15);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  flex-shrink: 0;
-}
-
-.ob-dot-active {
-  width: 20px;
-  border-radius: 3px;
-  background: linear-gradient(90deg, #92cdec, #0069d9);
-}
-
-.ob-pdot {
-  position: absolute;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: #92cdec;
-  box-shadow: 0 0 5px #92cdec;
-  top: 50%;
-  animation: obPulseTravel 2s ease infinite;
-}
-
-.ob-ring {
-  position: absolute;
-  border-radius: 50%;
-  border: 1px solid rgba(146,205,236,0.3);
-  animation: obRingExpand 2.5s ease-out infinite;
-  top: 50%;
-  left: 50%;
-}
-
-.ob-r1 { width:86px;  height:86px;  animation-delay:0s;   border-color:rgba(146,205,236,0.4); }
-.ob-r2 { width:118px; height:118px; animation-delay:0.7s; border-color:rgba(0,105,217,0.3); }
-.ob-r3 { width:152px; height:152px; animation-delay:1.4s; border-color:rgba(146,205,236,0.15); }
-
-@media (max-width: 600px) {
-  .ob-vis { height: 175px; padding: 12px 14px; }
-  .ob-copy { padding: 14px 16px 10px; }
-  .ob-title { font-size: 15px; }
-  .ob-desc { font-size: 11px; }
-  #ob-modal { border-radius: 16px; }
-}
-</style>
 
 
 
@@ -624,8 +366,8 @@ footer a{color:#aaa;text-decoration:underline;margin:0 8px}
   <!-- PAGE HEADER -->
   <div class="page-header">
     <div>
-      <div class="page-title">Compliance Dashboard</div>
-      <div class="page-subtitle" id="dash-subtitle">Earn% by completing the advisor and generating your required compliance documents</div>
+      <div class="page-title">Your Compliance Dashboard</div>
+      <div class="page-subtitle" id="dash-subtitle">Answer the AI Advisor and generate your documents to build your compliance score — and know exactly where you stand.</div>
     </div>
     <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
       <span class="ldot">Live monitoring</span>
@@ -644,7 +386,7 @@ footer a{color:#aaa;text-decoration:underline;margin:0 8px}
         <!-- Lock overlay — only covers the ring circle -->
         <div id="score-lock-overlay" style="position:absolute;top:5px;left:5px;width:110px;height:110px;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:2;border-radius:50%;background:rgba(10,10,10,.86);backdrop-filter:blur(5px);border:1px solid rgba(255,255,255,.06);">
           <div style="line-height:1;color:var(--secondary-text);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-          <div style="font-size:8px;font-weight:600;color:var(--secondary-text);margin-top:4px;text-align:center;line-height:1.4;letter-spacing:.02em;">Answer advisor<br>to unlock</div>
+          <div style="font-size:8px;font-weight:600;color:var(--secondary-text);margin-top:4px;text-align:center;line-height:1.4;letter-spacing:.02em;">Complete the advisor<br>to see your score</div>
         </div>
         <svg width="120" height="120" viewBox="0 0 120 120">
           <circle cx="60" cy="60" r="50" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="10"/>
@@ -843,8 +585,8 @@ footer a{color:#aaa;text-decoration:underline;margin:0 8px}
       <div class="risk-locked-icon">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity:.35;color:var(--secondary-text)"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
       </div>
-      <div class="risk-locked-title">Complete the AI Advisor to unlock</div>
-      <div class="risk-locked-sub">Answer all 16 questions to generate your personalised risk profile and earn 20%.</div>
+      <div class="risk-locked-title">Complete the AI Advisor to see your risk profile</div>
+      <div class="risk-locked-sub">Answer all 16 questions to generate your personalised risk breakdown across GDPR, POPIA, HIPAA and CCPA — and earn 20% toward your compliance score.</div>
       <div id="risk-lock-prog" style="font-size:12px;color:var(--accent);font-weight:600;">0 of 16 questions answered</div>
       <a href="#advisor" class="btn-o" style="margin-top:4px;">Answer questions
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
@@ -875,7 +617,7 @@ footer a{color:#aaa;text-decoration:underline;margin:0 8px}
 <footer>
   &copy; 3CH0 Compliance Pty Ltd. All rights reserved.<br>
   <a href="settings.html">Privacy &amp; Terms</a> |
-  <a href="mailto:3CH0.The.Only@gmail.com">Support</a> |
+  <a href="mailto:3CH0.The.Only@gmail.com" style="margin: 0;">Support</a> |
   <a href="https://discord.gg/W5SrbqK7j3" target="_blank">Join the Community</a>
 </footer>
 <div class="sec-badge"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block;vertical-align:middle;margin-right:3px;"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Secure</div>
@@ -889,7 +631,7 @@ footer a{color:#aaa;text-decoration:underline;margin:0 8px}
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ╔═══════════════════════════════════════════════════════════════╗
 // ║  Set TEST_MODE to true  → unlimited advisor resets, no lock  ║
 // ║  Set TEST_MODE to false → production mode, 1 check/month     ║
@@ -1324,117 +1066,6 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 
 </script>
-<script>
-// ═══════════════════════════════════════════════════
-// ONBOARDING POPUP — self-contained, no external deps
-// Shows on window.load, respects "Don't show again"
-// ═══════════════════════════════════════════════════
-(function() {
-  var OB_KEY   = '3ch0_ob_v2';
-  var OB_TOTAL = 6;
-  var obIdx    = 0;
 
-  function obGetW() {
-    var vp = document.getElementById('ob-viewport');
-    return vp ? vp.offsetWidth : 640;
-  }
-
-  function obSizeSlides() {
-    var w = obGetW();
-    var slides = document.querySelectorAll('.ob-slide');
-    for (var i = 0; i < slides.length; i++) {
-      slides[i].style.width    = w + 'px';
-      slides[i].style.minWidth = w + 'px';
-      slides[i].style.maxWidth = w + 'px';
-    }
-    var track = document.getElementById('ob-track');
-    if (track) track.style.transform = 'translateX(-' + (obIdx * w) + 'px)';
-  }
-
-  window.obGoTo = function(n) {
-    obIdx = Math.max(0, Math.min(OB_TOTAL - 1, n));
-    obSizeSlides();
-    for (var i = 0; i < OB_TOTAL; i++) {
-      var d = document.getElementById('odd' + i);
-      if (d) d.className = 'ob-dot' + (i === obIdx ? ' ob-dot-active' : '');
-    }
-    var prev = document.getElementById('ob-prev-btn');
-    if (prev) {
-      prev.style.opacity = obIdx === 0 ? '0' : '1';
-      prev.disabled = obIdx === 0;
-    }
-    var next = document.getElementById('ob-next-btn');
-    var skip = document.getElementById('ob-skip-btn');
-    var isLast = obIdx === OB_TOTAL - 1;
-    if (next) next.style.display = isLast ? 'none' : 'inline-flex';
-    if (skip) skip.style.display = isLast ? 'none' : 'inline';
-  };
-
-  window.obNext      = function() { if (obIdx < OB_TOTAL - 1) window.obGoTo(obIdx + 1); };
-  window.obPrev      = function() { if (obIdx > 0) window.obGoTo(obIdx - 1); };
-  window.obSkipToEnd = function() { window.obGoTo(OB_TOTAL - 1); };
-
-  window.obClose = function() {
-    var ov = document.getElementById('ob-overlay');
-    if (ov) ov.style.display = 'none';
-    document.body.style.overflow = '';
-    var chk = document.getElementById('ob-dsa-check');
-    if (chk && chk.checked) {
-      try { localStorage.setItem(OB_KEY, '1'); } catch(e) {}
-    }
-  };
-
-  function obShow() {
-    var seen = false;
-    try { seen = !!localStorage.getItem(OB_KEY); } catch(e) {}
-    if (seen) return;
-
-    var ov = document.getElementById('ob-overlay');
-    if (!ov) return;
-
-    // Make overlay visible first so offsetWidth is real, then size immediately
-    ov.style.display = 'flex';
-    document.body.style.overflow = 'hidden';
-
-    // Size on next frame — no delay so there is zero visible reflow
-    requestAnimationFrame(function() {
-      requestAnimationFrame(function() {
-        obSizeSlides();
-        window.obGoTo(0);
-      });
-    });
-  }
-
-  // Keyboard navigation
-  document.addEventListener('keydown', function(e) {
-    var ov = document.getElementById('ob-overlay');
-    if (!ov || ov.style.display === 'none') return;
-    if (e.key === 'ArrowRight') window.obNext();
-    if (e.key === 'ArrowLeft')  window.obPrev();
-    if (e.key === 'Escape')     window.obClose();
-  });
-
-  // Backdrop click
-  document.addEventListener('click', function(e) {
-    if (e.target && e.target.id === 'ob-overlay') window.obClose();
-  });
-
-  // Resize
-  window.addEventListener('resize', function() { obSizeSlides(); });
-
-  // Also re-size if modal dimensions change (e.g. font loading)
-  if (window.ResizeObserver) {
-    var modal = document.getElementById('ob-modal');
-    if (modal) {
-      var ro = new ResizeObserver(function() { obSizeSlides(); });
-      ro.observe(modal);
-    }
-  }
-
-  // Show popup — use window.load so DOM is fully painted
-  window.addEventListener('load', obShow);
-
-})();
-</script>
 </body>
 </html>
