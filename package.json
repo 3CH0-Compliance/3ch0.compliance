@@ -1,0 +1,27 @@
+{
+  "name": "3ch0-compliance",
+  "version": "1.0.0",
+  "description": "3CH0 Compliance - AI-Powered Compliance Solutions",
+  "main": "index.html",
+  "scripts": {
+    "build": "esbuild speed-insights.js --bundle --minify --outfile=dist/speed-insights.min.js --format=iife",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/3CH0-Compliance/3ch0._.compliance.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/3CH0-Compliance/3ch0._.compliance/issues"
+  },
+  "homepage": "https://github.com/3CH0-Compliance/3ch0._.compliance#readme",
+  "dependencies": {
+    "@vercel/speed-insights": "^2.0.0"
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.0"
+  }
+}

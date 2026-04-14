@@ -4,7 +4,7 @@ npm-debug.log
 yarn.lock
 
 # Builds
-dist/
+# dist/ - Keep dist for Speed Insights bundle
 build/
 public/build/
 
